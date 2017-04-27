@@ -7,4 +7,5 @@ gem 'minitest'
 group :development do
   gem 'rerun'
   gem 'pry'
+  gem 'pry-nav'
 end

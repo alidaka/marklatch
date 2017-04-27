@@ -6,6 +6,9 @@ class Dictionary
   end
 
   def read(filename)
+    File.open(filename, 'r').each do |line|
+      add_text(line) unless line.strip.empty?
+    end
   end
 
   def add_text(text)

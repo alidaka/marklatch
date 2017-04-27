@@ -1,28 +1,24 @@
 class Dictionary
-  attr_reader :n, :chain
+  attr_reader :n, :prefixes
   def initialize(n=nil)
     @n = n.nil? ? 2 : n
-    @chain = Hash.new {|hash, key| hash[key] = WordNode.new(key)}
+    @prefixes = Hash.new {|hash, key| hash[key] = Hash.new(0)}
   end
 
   def read(filename)
   end
 
   def add_text(text)
-    #text.split('.').each do |sentence|
-    #end
-    w_1 = w_2 = nil
-    text.split.push('.').each do |w|
-      if w_1.nil?
-        chain[w]
-      elsif w_2.nil?
-        chain[w_1].children[w]
-      else
-        chain[w_2].children[w_1].children[w]
-      end.increment
+    text.split(/[.!?]+/).map(&:strip).each do |sentence|
+      add_sentence(sentence)
+    end
+  end
 
-      w_2 = w_1
-      w_1 = w
+  def add_sentence(text)
+    w_1 = w_2 = nil
+    text.split.unshift(nil).unshift(nil).push('.').each_cons(3) do |first, second, third|
+      p = Prefix.new(first, second)
+      prefixes[p][third] += 1
     end
   end
 

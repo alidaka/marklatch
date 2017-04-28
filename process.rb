@@ -1,55 +1,53 @@
 #!/usr/bin/env ruby
 
-unless ARGV[0].nil?
-  puts "#{Time.now} -- splitting files"
-  `rm data/*`
-  `csplit --elide-empty-files --prefix=data/xx "Ultimate-Grinnell alumni.mbox" "/^From .*/" "{*}"`
+puts "#{Time.now} -- splitting files"
+`rm data/*`
+`csplit --elide-empty-files --prefix=data/xx "Ultimate-Grinnell alumni.mbox" "/^From .*/" "{*}"`
 
-  puts "#{Time.now} -- removing bad lines"
-  Dir.glob('data/xx*').each do |filename|
-    found_body = false
+puts "#{Time.now} -- removing bad lines"
+Dir.glob('data/xx*').each do |filename|
+  found_body = false
 
-    File.open("#{filename}.body", 'w') do |output|
-      File.open(filename, 'r').each do |line|
-        found_body |= line.strip.empty?
-        next unless found_body
+  File.open("#{filename}.body", 'w') do |output|
+    File.open(filename, 'r').each do |line|
+      found_body |= line.strip.empty?
+      next unless found_body
 
-        line.strip!.downcase!
+      line.strip!.downcase!
 
-        unless line.start_with?('>') ||
-               line.start_with?('<') ||
-               line.start_with?('&') ||
-               line.start_with?('&') ||
-               line.start_with?('quot;') ||
-               line.start_with?('--') ||
-               line.start_with?('Content-') ||
-               line.start_with?('You received this message because you are subscribed to the Google Groups') ||
-               line.start_with?('To unsubscribe from this group and stop receiving emails from it') ||
-               line.start_with?('For more options, visit') ||
-               line.start_with?('com/') ||
-               line.start_with?('com=') ||
-               line.start_with?('com_')
-          output.puts(line)
-        end
+      unless line.start_with?('>') ||
+        line.start_with?('<') ||
+        line.start_with?('&') ||
+        line.start_with?('&') ||
+        line.start_with?('quot;') ||
+        line.start_with?('--') ||
+        line.start_with?('Content-') ||
+        line.start_with?('You received this message because you are subscribed to the Google Groups') ||
+        line.start_with?('To unsubscribe from this group and stop receiving emails from it') ||
+        line.start_with?('For more options, visit') ||
+        line.start_with?('com/') ||
+        line.start_with?('com=') ||
+        line.start_with?('com_')
+        output.puts(line)
       end
     end
   end
+end
 
-  puts "#{Time.now} -- single-line-ify-ing"
-  Dir.glob('data/xx*.body').each do |filename|
-    File.open("#{filename}.final", 'w') do |output|
-      acc = ''
-      File.open(filename, 'r').each do |line|
-        if line.strip.empty? && !acc.strip.empty?
-          output.print(acc + "\n")
-          acc = ''
-          next
-        end
-
-        acc += line.strip + ' '
+puts "#{Time.now} -- single-line-ify-ing"
+Dir.glob('data/xx*.body').each do |filename|
+  File.open("#{filename}.final", 'w') do |output|
+    acc = ''
+    File.open(filename, 'r').each do |line|
+      if line.strip.empty? && !acc.strip.empty?
+        output.print(acc + "\n")
+        acc = ''
+        next
       end
-      output.print("#{acc}\n")
+
+      acc += line.strip + ' '
     end
+    output.print("#{acc}\n")
   end
 end
 
@@ -112,9 +110,15 @@ d.prefixes[Prefix.new(nil, nil)].delete('d')
 d.prefixes[Prefix.new(nil, nil)].delete('n')
 d.prefixes[Prefix.new(nil, nil)].delete('iso-8859-1')
 
-goog = Prefix.new(nil, 'google')
-d.prefixes[Prefix.new(nil, nil)]['google'] -= d.prefixes[goog]['.']
-d.prefixes[goog].delete('.')
+parent = Prefix.new(nil, 'google')
+d.prefixes[Prefix.new(nil, nil)]['google'] -= d.prefixes[parent]['.']
+d.prefixes[parent].delete('.')
 
-puts "#{Time.now} -- output???"
-require 'pry'; binding.pry
+parent = Prefix.new(nil, 'grinnell')
+d.prefixes[Prefix.new(nil, nil)]['grinnell'] -= d.prefixes[parent]['ultimate']
+d.prefixes[parent].delete('ultimate')
+
+puts "#{Time.now} -- output"
+d.prefixes.default = nil
+o = Marshal.dump(d)
+File.open('serial_dictionary', 'w') do |f| f.puts(o) end

@@ -60,5 +60,37 @@ Dir.glob('data/xx*.body').each do |filename|
   d.read(filename)
 end
 
+puts "#{Time.now} -- massage some prefixes"
+d.prefixes[Prefix.new(nil, nil)].reject! { |word, count|
+  word.size > 20 ||
+    count == 1 ||
+    word.start_with?('=') ||
+    word.start_with?('<') ||
+    word.start_with?('/') ||
+    word.start_with?('.') ||
+    word.start_with?('com<') ||
+    word.start_with?('com>') ||
+    word.start_with?('com/') ||
+    word.start_with?('com"') ||
+    word.start_with?('com&') ||
+    word.start_with?('com\'') ||
+    word.start_with?('8ex;') ||
+    word.start_with?('content-type') ||
+    word.start_with?('you received this message because you are subscribed to the google groups') ||
+    word.start_with?('legroups') ||
+    word.start_with?('s://groups') ||
+    word.start_with?('https://groups') ||
+    word.start_with?('\">https://') ||
+    word.start_with?('i&#39;m') ||
+    word.start_with?('co<wbr') ||
+    word.include?('@') ||
+    word.include?('=') ||
+    false
+}
+
+goog = Prefix.new(nil, 'google')
+d.prefixes[Prefix.new(nil, nil)]['google'] -= d.prefixes[goog]['.']
+d.prefixes[goog].delete('.')
+
 puts "#{Time.now} -- output???"
 require 'pry'; binding.pry

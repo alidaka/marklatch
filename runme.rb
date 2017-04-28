@@ -14,6 +14,7 @@ unless ARGV[0].nil?
         found_body |= line.strip.empty?
         next unless found_body
 
+        line.strip!.downcase!
 
         unless line.start_with?('>') ||
                line.start_with?('<') ||
@@ -26,8 +27,9 @@ unless ARGV[0].nil?
                line.start_with?('To unsubscribe from this group and stop receiving emails from it') ||
                line.start_with?('For more options, visit') ||
                line.start_with?('com/') ||
+               line.start_with?('com=') ||
                line.start_with?('com_')
-          output.print(line)
+          output.puts(line)
         end
       end
     end

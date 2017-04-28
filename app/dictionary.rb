@@ -1,3 +1,5 @@
+require_relative 'prefix'
+
 class Dictionary
   attr_reader :prefixes
   def initialize(rand=nil)
@@ -25,7 +27,26 @@ class Dictionary
     end
   end
 
+  def next_word(prefix)
+    max = prefixes[prefix].map(&:last).inject(:+)
+    r = @rand.rand(max)
+    prefixes[prefix].each do |word, odds|
+      return word if r < odds
+      r -= odds
+    end
+  end
+
   def speak
-    'hello world'
+    p = Prefix.new(nil, nil)
+    w = nil
+    s = Array.new
+
+    until w == '.' do
+      w = next_word(p)
+      s << w
+      p = Prefix.new(p.second, w)
+    end
+
+    s.join(' ')[0...-2]
   end
 end

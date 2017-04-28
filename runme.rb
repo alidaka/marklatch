@@ -45,3 +45,6 @@ d = Dictionary.new
 Dir.glob('data/xx*.body').each do |filename|
   d.read(filename)
 end
+
+puts "#{Time.now} -- output???"
+require 'pry'; binding.pry

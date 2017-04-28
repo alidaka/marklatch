@@ -72,12 +72,21 @@ describe Dictionary do
   end
 
   describe 'when speaking text' do
+    class MockRandom
+      def rand(x)
+        0
+      end
+    end
+
     before do
-      @d = Dictionary.new
+      @d = Dictionary.new(MockRandom.new)
     end
 
     it 'handles a simple case' do
       @d.add_text('hello world')
+
+      @d.next_word(Prefix.new(nil, nil)).must_equal 'hello'
+      @d.next_word(Prefix.new(nil, 'hello')).must_equal 'world'
       @d.speak.must_equal 'hello world'
     end
   end

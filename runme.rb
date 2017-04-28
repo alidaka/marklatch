@@ -66,8 +66,10 @@ d.prefixes[Prefix.new(nil, nil)].reject! { |word, count|
     count == 1 ||
     word.start_with?('=') ||
     word.start_with?('<') ||
+    word.start_with?('>') ||
     word.start_with?('/') ||
     word.start_with?('.') ||
+    word.start_with?('a0') ||
     word.start_with?('com<') ||
     word.start_with?('com>') ||
     word.start_with?('com/') ||
@@ -87,6 +89,28 @@ d.prefixes[Prefix.new(nil, nil)].reject! { |word, count|
     word.include?('=') ||
     false
 }
+
+d.prefixes[Prefix.new(nil, nil)].delete('3d')
+d.prefixes[Prefix.new(nil, nil)].delete('_blank')
+d.prefixes[Prefix.new(nil, nil)].delete('com')
+d.prefixes[Prefix.new(nil, nil)].delete('ltr')
+d.prefixes[Prefix.new(nil, nil)].delete('c2')
+d.prefixes[Prefix.new(nil, nil)].delete('gmail_quote')
+d.prefixes[Prefix.new(nil, nil)].delete('et')
+d.prefixes[Prefix.new(nil, nil)].delete('targ')
+d.prefixes[Prefix.new(nil, nil)].delete('s')
+d.prefixes[Prefix.new(nil, nil)].delete('e')
+d.prefixes[Prefix.new(nil, nil)].delete('margin:0')
+d.prefixes[Prefix.new(nil, nil)].delete('x')
+d.prefixes[Prefix.new(nil, nil)].delete('t')
+d.prefixes[Prefix.new(nil, nil)].delete('gmail_extra')
+d.prefixes[Prefix.new(nil, nil)].delete('utf-8')
+d.prefixes[Prefix.new(nil, nil)].delete('iso-8859-1')
+d.prefixes[Prefix.new(nil, nil)].delete('oglegroups')
+d.prefixes[Prefix.new(nil, nil)].delete('nofollow')
+d.prefixes[Prefix.new(nil, nil)].delete('d')
+d.prefixes[Prefix.new(nil, nil)].delete('n')
+d.prefixes[Prefix.new(nil, nil)].delete('iso-8859-1')
 
 goog = Prefix.new(nil, 'google')
 d.prefixes[Prefix.new(nil, nil)]['google'] -= d.prefixes[goog]['.']

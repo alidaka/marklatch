@@ -14,7 +14,19 @@ unless ARGV[0].nil?
         found_body |= line.strip.empty?
         next unless found_body
 
-        unless line.start_with?('>') || line.start_with?('&gt;') || line.start_with?('quot;') || line.start_with?('--') || line.start_with?('Content-') || line.start_with?('<') || line.start_with?('You received this message because you are subscribed to the Google Groups') || line.start_with?('To unsubscribe from this group and stop receiving emails from it') || line.start_with?('For more options, visit')
+
+        unless line.start_with?('>') ||
+               line.start_with?('<') ||
+               line.start_with?('&') ||
+               line.start_with?('&') ||
+               line.start_with?('quot;') ||
+               line.start_with?('--') ||
+               line.start_with?('Content-') ||
+               line.start_with?('You received this message because you are subscribed to the Google Groups') ||
+               line.start_with?('To unsubscribe from this group and stop receiving emails from it') ||
+               line.start_with?('For more options, visit') ||
+               line.start_with?('com/') ||
+               line.start_with?('com_')
           output.print(line)
         end
       end

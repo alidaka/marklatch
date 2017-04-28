@@ -40,6 +40,7 @@ class Dictionary
     p = Prefix.new(nil, first)
     w = nil
     s = Array.new
+    s.push(first) unless first.nil?
 
     until w == '.' do
       w = next_word(p)

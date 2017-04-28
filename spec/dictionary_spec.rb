@@ -6,14 +6,6 @@ describe Dictionary do
     @d = Dictionary.new
   end
 
-  it 'initializes n-gram count to 2 by default' do
-    @d.n.must_equal 2
-  end
-
-  it 'allows override n-gram count' do
-    Dictionary.new(5).n.must_equal 5
-  end
-
   describe 'when interacting with files' do
     before do
       @file = Tempfile.new('dictionary_spec')
@@ -33,12 +25,7 @@ describe Dictionary do
 
   describe 'when parsing text' do
     before do
-      @d = Dictionary.new(3)
-    end
-
-    it 'handles a simple case' do
-      @d.add_text('hello world')
-      @d.speak.must_equal 'hello world'
+      @d = Dictionary.new
     end
 
     it 'splits words' do
@@ -81,6 +68,17 @@ describe Dictionary do
 
       @d.prefixes.keys.must_include(Prefix.new(nil, nil))
       @d.prefixes[Prefix.new(nil, nil)].must_equal({'a'=>2, 'c'=>1})
+    end
+  end
+
+  describe 'when speaking text' do
+    before do
+      @d = Dictionary.new
+    end
+
+    it 'handles a simple case' do
+      @d.add_text('hello world')
+      @d.speak.must_equal 'hello world'
     end
   end
 end

@@ -1,7 +1,7 @@
 class Dictionary
-  attr_reader :n, :prefixes
-  def initialize(n=nil)
-    @n = n.nil? ? 2 : n
+  attr_reader :prefixes
+  def initialize(rand=nil)
+    @rand = rand.nil? ? Random.new : rand
     @prefixes = Hash.new {|hash, key| hash[key] = Hash.new(0)}
   end
 

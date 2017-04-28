@@ -36,8 +36,8 @@ class Dictionary
     end
   end
 
-  def speak
-    p = Prefix.new(nil, nil)
+  def speak(first=nil)
+    p = Prefix.new(nil, first)
     w = nil
     s = Array.new
 

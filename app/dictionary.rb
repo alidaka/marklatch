@@ -14,7 +14,7 @@ class Dictionary
   end
 
   def add_text(text)
-    text.split(/[.!?]+/).map(&:strip).each do |sentence|
+    text.split(/[.!?="']+/).map(&:strip).each do |sentence|
       add_sentence(sentence)
     end
   end
